@@ -32,7 +32,7 @@ class CustomerSerializer(serializers.ModelSerializer):
             'last_name',
             'email',
             'phone',
-            'company_name',
+            # 'company_name',
             'address',
             'created_at',
             'updated_at'
