@@ -70,16 +70,40 @@ WSGI_APPLICATION = 'crm_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB', 'crm_db'),
-        'USER': os.environ.get('POSTGRES_USER', 'crm_user'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'crm_password'),
-        'HOST': os.environ.get('DATABASE_HOST', 'db'),
-        'PORT': os.environ.get('DATABASE_PORT', '5432'),
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('POSTGRES_DB', 'crm_db'),
+#         'USER': os.environ.get('POSTGRES_USER', 'crm_user'),
+#         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'crm_password'),
+#         'HOST': os.environ.get('DATABASE_HOST', 'db'),
+#         'PORT': os.environ.get('DATABASE_PORT', '5432'),
+#     }
+# }
+
+from decouple import config
+
+# Database configuration
+DATABASE_ENGINE = config('DATABASE_ENGINE', default='sqlite')
+
+if DATABASE_ENGINE == 'postgresql':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': config('POSTGRES_DB', default='crm_db'),
+            'USER': config('POSTGRES_USER', default='crm_user'),
+            'PASSWORD': config('POSTGRES_PASSWORD', default='crm_password'),
+            'HOST': config('DATABASE_HOST', default='127.0.0.1'),
+            'PORT': config('DATABASE_PORT', default='5432'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -140,3 +164,5 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
+AUTH_USER_MODEL = 'customers.User' 
