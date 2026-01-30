@@ -1,9 +1,10 @@
 [phases.setup]
-nixPkgs = ["python312"]
+nixPkgs = ["python312", "openssl"]
+nixLibs = ["openssl"]
 
 [phases.install]
 cmds = [
-    "python -m pip install --upgrade pip setuptools wheel",
+    "pip install --upgrade pip setuptools wheel",
     "pip install -r requirements.txt"
 ]
 
